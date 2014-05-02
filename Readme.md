@@ -16,6 +16,10 @@ $ cd myproject
 $ gob
 ```
 
+## Credit
+
+Based on the [build](https://github.com/coreos/fleet/blob/master/build) script many of the [CoreOs](https://github.com/coreos) projects use.
+
 ## License
 
 The MIT License (MIT)
