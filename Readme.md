@@ -3,6 +3,12 @@
 
 A simple go build helper
 
+## install
+
+```
+$ go get github.com/Bodhi5/gob
+```
+
 ## Usage
 
 gob uses a custom `GOPATH` at `./gopath` and `GOBIN` path at `./bin`
