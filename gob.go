@@ -1,13 +1,11 @@
 package main
 
 import (
-  "encoding/json"
-  "io/ioutil"
-  "log"
+  "fmt"
   "os"
-  "os/exec"
-  "strings"
 )
+
+var Version = "0.2.0"
 
 type Config struct {
   Name    string `json:"name"`
@@ -15,47 +13,38 @@ type Config struct {
   Org     string `json:"org"`
 }
 
+
 func main() {
-  var config Config
+  args := os.Args[1:]
 
-  curDir, _ := os.Getwd()
-  file, e := ioutil.ReadFile("./config.json")
+  if len(args) > 0 {
+    switch args[0] {
+    case "init":
+      config := Config{}
 
-  if e != nil {
-    log.Fatalf("Error: %v\n", e)
-  }
+      fmt.Print("name: ")
+      fmt.Scan(&config.Name)
 
-  if e := json.Unmarshal(file, &config); e != nil {
-    log.Fatalf("Error: %v\n", e)
-  }
+      fmt.Print("version: ")
+      fmt.Scan(&config.Version)
 
-  repoPath := config.Org + "/" + config.Name
+      fmt.Print("org: ")
+      fmt.Scan(&config.Org)
 
-  if e := os.MkdirAll("./gopath/src/"+config.Org, 0755); e != nil {
-    if !strings.Contains(e.Error(), "exists") {
-      log.Fatalf("Error: %v\n", e)
+      Create(&config)
+    case "build":
+      Build()
     }
+  } else {
+    fmt.Printf(`
+      Gob v%v - Simple go build helper
+
+      Usage: gob <command> [options]
+
+      Commands:
+
+       init     Create project config.json
+       build    Fetch dependencies and build project
+    `+"\n", Version)
   }
-
-  if e := os.Symlink("../../../..", "gopath/src/"+repoPath); e != nil {
-    if !strings.Contains(e.Error(), "exists") {
-      log.Fatalf("Error: %v\n", e)
-    }
-  }
-
-  os.Setenv("GOBIN", curDir+"/bin")
-  os.Setenv("GOPATH", curDir+"/gopath")
-
-  log.Println("Getting Dependencies...")
-
-  depsCmd := exec.Command("go", "get")
-  depsCmd.Dir = curDir + "/gopath/src/" + repoPath
-  depsCmd.Stdout, depsCmd.Stderr = os.Stdout, os.Stderr
-  depsCmd.Run()
-
-  log.Printf("Building %s...", config.Name)
-
-  cmd := exec.Command("go", "install", repoPath)
-  cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
-  cmd.Run()
 }

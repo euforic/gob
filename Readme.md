@@ -9,17 +9,32 @@ A simple go build helper
 $ go get github.com/Bodhi5/gob
 ```
 
+## Overview
+
+The folder structure and set up for a go workspace isn't always ideal when working on multiple projects and can be tedious to set up at times.
+gob is just a simple project that aids you in creating the workspace on-the-fly when you build your project.
+This will allow you to not have to continually set your `$GOPATH` and work with the deeply nested folder structure required, but also use the built in tools to build and run your project.
+
 ## Usage
 
-gob uses a custom `GOPATH` at `./gopath` and `GOBIN` path at `./bin`
+gob uses a custom `$GOPATH` path at `$CWD/gopath` and `GOBIN` path at `$CWD/bin`
 allowing for the normal `go build` tool to work with out needing the nested
 folder structure usually required.
 
-To build your project simple run `gob` from your project dir
+
+## Set up a new project to build with gob
+
+Just run the command and you will be prompted for the project `name` and organization `org`
+```
+$ gob init
+```
+
+To build your project simple run the following command from your project dir
+
+## Building your project
 
 ```
-$ cd myproject
-$ gob
+$ gob build
 ```
 
 ## Credit
