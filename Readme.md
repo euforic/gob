@@ -1,6 +1,8 @@
 
 # gob
 
+[![Build Status](https://travis-ci.org/bodhi5/gob.svg?branch=master)](https://travis-ci.org/bodhi5/gob)
+
 A simple go build helper
 
 ## install
